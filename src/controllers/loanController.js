@@ -5,12 +5,9 @@ export const LoanController = {
     const { book_id, member_id, due_date } = req.body;
     try {
       const loan = await LoanModel.createLoan(book_id, member_id, due_date);
-      res.status(201).json({
-        message: "Peminjaman berhasil dicatat!",
-        data: loan
-      });
+      res.status(201).json({ message: "Peminjaman berhasil dicatat!", data: loan });
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(400).json({ error: err.message || "Gagal" });
     }
   },
 
@@ -23,15 +20,17 @@ export const LoanController = {
     }
   },
 
+  // TUGAS: Pesan disamakan dengan kating
   async getTopBorrowers(req, res) {
     try {
       const topBorrowers = await LoanModel.getTopBorrowers();
       res.status(200).json({
-        message: "Berhasil mengambil Top 3 Peminjam",
+        message: "Top 3 peminjam buku berhasil diambil", // Sama persis sama gambar kating
         data: topBorrowers
       });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      // Biar nggak error "" lagi, kita kasih pesan default kalau err.message kosong
+      res.status(500).json({ error: err.message || "Terjadi kesalahan pada server" });
     }
   }
 };
